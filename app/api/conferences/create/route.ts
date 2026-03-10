@@ -15,7 +15,7 @@ export async function POST(request: Request) {
   const summary = String(data.get("summary") || "");
 
   if (!name || !committee || !country || !topic || !eventDatetime) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url), { status: 303 });
   }
 
   await prisma.conference.create({
@@ -31,5 +31,5 @@ export async function POST(request: Request) {
   });
 
   await logAction(user.id, "create_conference", name);
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  return NextResponse.redirect(new URL("/dashboard", request.url), { status: 303 });
 }

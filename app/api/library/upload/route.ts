@@ -30,5 +30,5 @@ export async function POST(request: Request) {
   }
 
   await logAction(user.id, "upload_library", `${files.length} file(s)`);
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  return NextResponse.redirect(new URL("/dashboard", request.url), { status: 303 });
 }

@@ -18,5 +18,5 @@ export async function POST(
     await logAction(admin.id, "admin_delete_user", `Deleted user ${id}`);
   }
 
-  return NextResponse.redirect(new URL("/admin", request.url));
+  return NextResponse.redirect(new URL("/admin", request.url), { status: 303 });
 }

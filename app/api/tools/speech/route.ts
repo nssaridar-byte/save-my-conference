@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const speechText = String(data.get("speech_text") || "");
 
   if (!allowed.ok) {
-    return NextResponse.redirect(new URL("/speech-lab", request.url));
+    return NextResponse.redirect(new URL("/speech-lab", request.url), { status: 303 });
   }
 
   try {
@@ -23,7 +23,7 @@ export async function POST(request: Request) {
     const url = new URL("/speech-lab", request.url);
     url.searchParams.set("speech_text", speechText);
     url.searchParams.set("data", encodeURIComponent(JSON.stringify(result)));
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(url, { status: 303 });
   } catch (error) {
     console.error("SPEECH API ERROR:", error);
     return new NextResponse(JSON.stringify({ error: String(error) }), { status: 500 });

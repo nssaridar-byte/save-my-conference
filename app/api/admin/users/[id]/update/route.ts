@@ -21,5 +21,5 @@ export async function POST(
   });
 
   await logAction(admin.id, "admin_update_user", `Updated user ${id}`);
-  return NextResponse.redirect(new URL("/admin", request.url));
+  return NextResponse.redirect(new URL("/admin", request.url), { status: 303 });
 }

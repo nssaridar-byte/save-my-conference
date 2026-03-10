@@ -10,12 +10,12 @@ export async function POST(request: Request) {
   const password = String(data.get("password") || "");
 
   if (!name || !email || !password) {
-    return NextResponse.redirect(new URL("/signup", request.url));
+    return NextResponse.redirect(new URL("/signup", request.url), { status: 303 });
   }
 
   const existing = await prisma.user.findUnique({ where: { email } });
   if (existing) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/login", request.url), { status: 303 });
   }
 
   const user = await prisma.user.create({
@@ -29,5 +29,5 @@ export async function POST(request: Request) {
   await setUserSession(user.id);
   await logAction(user.id, "signup", "New account created");
 
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  return NextResponse.redirect(new URL("/dashboard", request.url), { status: 303 });
 }

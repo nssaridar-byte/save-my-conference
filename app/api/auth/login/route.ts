@@ -10,16 +10,16 @@ export async function POST(request: Request) {
 
   const user = await prisma.user.findUnique({ where: { email } });
   if (!user || !user.isActive) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/login", request.url), { status: 303 });
   }
 
   const ok = await verifyPassword(password, user.passwordHash);
   if (!ok) {
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/login", request.url), { status: 303 });
   }
 
   await setUserSession(user.id);
   await logAction(user.id, "login", "User logged in");
 
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  return NextResponse.redirect(new URL("/dashboard", request.url), { status: 303 });
 }

@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const data = await request.formData();
 
   if (!allowed.ok) {
-    return NextResponse.redirect(new URL("/quiz", request.url));
+    return NextResponse.redirect(new URL("/quiz", request.url), { status: 303 });
   }
 
   const topic = String(data.get("topic") || "");
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     const url = new URL("/quiz", request.url);
     url.searchParams.set("topic", topic);
     url.searchParams.set("data", encodeURIComponent(JSON.stringify(quiz)));
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(url, { status: 303 });
   } catch (error) {
     console.error("QUIZ API ERROR:", error);
     return new NextResponse(JSON.stringify({ error: String(error) }), { status: 500 });

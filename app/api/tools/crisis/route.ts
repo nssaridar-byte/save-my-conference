@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const data = await request.formData();
 
   if (!allowed.ok) {
-    return NextResponse.redirect(new URL("/crisis", request.url));
+    return NextResponse.redirect(new URL("/crisis", request.url), { status: 303 });
   }
 
   const topic = String(data.get("topic") || "");
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     url.searchParams.set("country", country);
     url.searchParams.set("committee", committee);
     url.searchParams.set("data", encodeURIComponent(JSON.stringify(result)));
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(url, { status: 303 });
   } catch (error) {
     console.error("CRISIS API ERROR:", error);
     return new NextResponse(JSON.stringify({ error: String(error) }), { status: 500 });

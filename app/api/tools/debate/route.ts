@@ -11,7 +11,7 @@ export async function POST(request: Request) {
   const data = await request.formData();
 
   if (!allowed.ok) {
-    return NextResponse.redirect(new URL("/debate", request.url));
+    return NextResponse.redirect(new URL("/debate", request.url), { status: 303 });
   }
 
   const yourCountry = String(data.get("your_country") || "");
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     url.searchParams.set("opponent_country", opponentCountry);
     url.searchParams.set("topic", topic);
     url.searchParams.set("data", encodeURIComponent(JSON.stringify(result)));
-    return NextResponse.redirect(url);
+    return NextResponse.redirect(url, { status: 303 });
   } catch (error) {
     console.error("DEBATE API ERROR:", error);
     return new NextResponse(JSON.stringify({ error: String(error) }), { status: 500 });
